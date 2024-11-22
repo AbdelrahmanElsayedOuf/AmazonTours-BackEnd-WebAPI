@@ -16,12 +16,12 @@ namespace Models
         public Guid Id { get; set; }
 
         [StringLength(100)]
-        public string FName { get; set; } = string.Empty;
+        public string FName { get; set; }
         [StringLength(100)]
-        public string LName { get; set; } = string.Empty;
+        public string LName { get; set; }
 
         [StringLength(100)]
-        public string IdentityImage { get; set; } = string.Empty;
+        public string IdentityImage { get; set; }
 
         [ForeignKey(nameof(City))]
         public Guid CityId { get; set; }
@@ -30,10 +30,10 @@ namespace Models
 
         [EnumDataType(typeof(Gender))]
         public Gender Gender { get; set; }
-        public City City { get; set; } = new();
-        public Country Country { get; set; } = new();
-        public List<Inquiry> Inquiries { get; set; } = new();
-        public List<Reservation> Reservations { get; set; } = new();
+        public City City { get; set; }
+        public Country Country { get; set; }
+        public List<Inquiry> Inquiries { get; set; }
+        public List<Reservation> Reservations { get; set; }
 
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }

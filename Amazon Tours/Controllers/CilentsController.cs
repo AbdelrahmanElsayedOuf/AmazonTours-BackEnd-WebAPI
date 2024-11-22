@@ -11,7 +11,7 @@ namespace Amazon_Tours.Controllers
     [ApiController]
     public class CilentsController : ControllerBase
     {
-        private readonly IClientService clientService;
+        /*private readonly IClientService clientService;
 
         public CilentsController(IClientService clientService)
         {
@@ -38,7 +38,7 @@ namespace Amazon_Tours.Controllers
             }).ToList();
 
             return ApiResponseFactory<List<ClientDTO>>.SuccessResponse(allClinetsDtos, HttpStatusCode.OK, "success");
-        }
+        }*/
 
       /*  [HttpGet]
         [Route("GetClientById/{id:guid}")]

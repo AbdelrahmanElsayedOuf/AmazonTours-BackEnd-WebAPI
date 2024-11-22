@@ -24,9 +24,9 @@ namespace Models
         public int NumOfTripleRooms { get; set; }
 
 
-        public Client Client { get; set; } = new();
-        public Hotel Hotel { get; set; } = new();
-        public Trip Trip { get; set; } = new();
+        public Client Client { get; set; }
+        public Hotel Hotel { get; set; }
+        public Trip Trip { get; set; }
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
         [DefaultValue(true)]

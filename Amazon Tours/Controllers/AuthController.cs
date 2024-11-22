@@ -15,7 +15,7 @@ namespace Amazon_Tours.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
+        /*private readonly IUserService _userService;
 
         public AuthController(IUserService userService)
         {
@@ -38,6 +38,6 @@ namespace Amazon_Tours.Controllers
                 return Ok(ApiResponseFactory<string>.SuccessResponse(null, System.Net.HttpStatusCode.Created, result.StrBuildMessage.ToString()));
             }
             return BadRequest(ApiResponseFactory<string>.FailureResponse(null, System.Net.HttpStatusCode.BadRequest, result.StrBuildMessage.ToString()));
-        }
+        }*/
     }
 }

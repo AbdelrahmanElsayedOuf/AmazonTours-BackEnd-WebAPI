@@ -14,12 +14,12 @@ namespace Models
         public Guid Id { get; set; }
 
         [StringLength(100)]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
-        public List<Client> Clients { get; set; } = new();
-        public List<City> Cities { get; set; } = new();
-        public List<Trip> Trips { get; set; } = new();
-        public List<Hotel> Hotels { get; set; } = new();
+        public List<Client> Clients { get; set; }
+        public List<City> Cities { get; set; }
+        public List<Trip> Trips { get; set; }
+        public List<Hotel> Hotels { get; set; }
 
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }

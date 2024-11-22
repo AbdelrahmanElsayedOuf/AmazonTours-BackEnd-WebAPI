@@ -27,8 +27,8 @@ namespace Models
         [EnumDataType(typeof(SeriousnessLevel))]
         public SeriousnessLevel SeriousnessLevel { get; set; }
 
-        public Client Client { get; set; } = new();
-        public Trip Trip { get; set; } = new();
+        public Client Client { get; set; }
+        public Trip Trip { get; set; }
 
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }

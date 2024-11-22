@@ -94,7 +94,7 @@ namespace AmazonTours.Infrastructure.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("RecieptVoucher");
+                    b.ToTable("RecieptVoucher", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -322,7 +322,7 @@ namespace AmazonTours.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("Models.Client", b =>
@@ -370,7 +370,7 @@ namespace AmazonTours.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("Models.Country", b =>
@@ -395,7 +395,7 @@ namespace AmazonTours.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("Models.Hotel", b =>
@@ -436,7 +436,7 @@ namespace AmazonTours.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Hotels");
+                    b.ToTable("Hotels", (string)null);
                 });
 
             modelBuilder.Entity("Models.Inquiry", b =>
@@ -472,7 +472,7 @@ namespace AmazonTours.Infrastructure.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("Inquiries");
+                    b.ToTable("Inquiries", (string)null);
                 });
 
             modelBuilder.Entity("Models.Reservation", b =>
@@ -525,7 +525,7 @@ namespace AmazonTours.Infrastructure.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("Models.Trip", b =>
@@ -583,7 +583,7 @@ namespace AmazonTours.Infrastructure.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("Trips");
+                    b.ToTable("Trips", (string)null);
                 });
 
             modelBuilder.Entity("AmazonTours.Domain.RecieptVoucher", b =>

@@ -15,16 +15,16 @@ namespace AmazonTours.Application.DTOs.CreateDTOs
     public class CreateRecieptDTO
     {
         public Guid ClientId { get; set; }
-        public string EmployeeId { get; set; } = string.Empty;
+        public string EmployeeId { get; set; }
 
         public decimal PaidAmount { get; set; }
         public decimal RemainingAmount { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal DiscountRatio { get; set; }
         public decimal DiscountAmount { get; set; }
-        public string TripNotes { get; set; } = string.Empty;
+        public string TripNotes { get; set; }
         public int NumberOfPassengers { get; set; }
-        public string RecieptAttachmentImage { get; set; } = string.Empty;
+        public string RecieptAttachmentImage { get; set; }
 
         public TripType TripType { get; set; }
         public PaymentMethod PaymentMethod { get; set; }

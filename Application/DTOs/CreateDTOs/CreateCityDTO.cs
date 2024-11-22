@@ -11,7 +11,7 @@ namespace AmazonTours.Application.DTOs.CreateDTOs
 {
     public class CreateCityDTO
     {
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
         public Guid CountryId { get; set; }
     }
 }

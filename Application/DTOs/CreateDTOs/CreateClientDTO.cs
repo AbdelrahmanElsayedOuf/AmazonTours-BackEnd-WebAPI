@@ -12,8 +12,8 @@ namespace AmazonTours.Application.DTOs.CreateDTOs
 {
     public class CreateClientDTO
     {
-        public string FName { get; set; } = string.Empty;
-        public string LName { get; set; } = string.Empty;
+        public string FName { get; set; }
+        public string LName { get; set; }
         public Gender Gender { get; set; }
         public Guid CityId { get; set; }
         public Guid CountryId { get; set; }

@@ -14,7 +14,7 @@ namespace Amazon_Tours.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
-        private readonly ICityService _cityService;
+        /*private readonly ICityService _cityService;
 
         public TestController(ICityService cityService)
         {
@@ -38,6 +38,6 @@ namespace Amazon_Tours.Controllers
                 });
             }
             return ApiResponseFactory<List<CityDTO>>.SuccessResponse(allCitiesDtos, HttpStatusCode.OK, "Success");
-        }
+        }*/
     }
 }

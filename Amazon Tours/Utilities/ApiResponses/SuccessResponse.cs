@@ -5,9 +5,8 @@ namespace Amazon_Tours.Utilities.ApiResponses
 {
     public class SuccessResponse<T> : IApiResponse<T>
     {
-        public bool Success { get; set; } = true;
-        public T Data { get; set; }
-        public HttpStatusCode StatusCode { get; set; }
-        public string Message { get; set; } = string.Empty;
+        public bool Success { get; } = true;
+        public T Data { get; set; } = default(T);
+        public string Message { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Models
         public Guid Id { get; set; }
 
         [StringLength(100)]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
         [ForeignKey(nameof(City))]
         public Guid CityId { get; set; }
@@ -25,7 +25,7 @@ namespace Models
 
         public City City { get; set; } = new();
         public Country Country { get; set; } = new();
-        public List<Reservation> Reservations { get; set; } = new();
+        public List<Reservation> Reservations { get; set; }
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
         [DefaultValue(true)]

@@ -13,8 +13,8 @@ namespace AmazonTours.Application.DTOs.ReadDTOs
     public class CityDTO
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string CountryName { get; set; } = string.Empty;
+        public string Name { get; set; }
+        public string CountryName { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsAvailable { get; set; }
     }

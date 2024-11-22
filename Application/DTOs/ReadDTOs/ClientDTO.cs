@@ -11,11 +11,11 @@ namespace AmazonTours.Application.DTOs.ReadDTOs
     public class ClientDTO
     {
         public Guid Id { get; set; }
-        public string FName { get; set; } = string.Empty;
-        public string LName { get; set; } = string.Empty;
+        public string FName { get; set; }
+        public string LName { get; set; }
         public Gender Gender { get; set; }
-        public string CityName {  get; set; } = string.Empty;
-        public string CountryName { get; set; } = string.Empty;
+        public string CityName {  get; set; }
+        public string CountryName { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsAvailable { get; set; }
 

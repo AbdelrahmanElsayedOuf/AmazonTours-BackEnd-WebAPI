@@ -19,18 +19,18 @@ namespace AmazonTours.Domain
         public Guid Id { get; set; }
         [ForeignKey(nameof(Client))]
         public Guid ClientId { get; set; }
-        public Client Client { get; set; } = new();
+        public Client Client { get; set; }
 
         [ForeignKey(nameof(Employee))]
-        public string EmployeeId { get; set; } = string.Empty;
-        public IdentityUser Employee { get; set; } = new();
+        public string EmployeeId { get; set; }
+        public IdentityUser Employee { get; set; }
 
         public decimal PaidAmount { get; set; }
         public decimal RemainingAmount { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal DiscountRatio { get; set; }
         public decimal DiscountAmount { get; set; }
-        public string TripNotes { get; set; } = string.Empty;
+        public string TripNotes { get; set; }
         [EnumDataType(typeof(TripType))]
         public TripType TripType { get; set; }
         [EnumDataType(typeof(PaymentMethod))]
@@ -38,7 +38,7 @@ namespace AmazonTours.Domain
         [EnumDataType(typeof(Branch))]
         public Branch Branch { get; set; }
         public int NumberOfPassengers { get; set; }
-        public string RecieptAttachmentImage { get; set; } = string.Empty;
+        public string RecieptAttachmentImage { get; set; }
         [EnumDataType(typeof(TransportationType))]
         public TransportationType TransportationType { get; set; }
         public DateTime TripStartDate { get; set; }

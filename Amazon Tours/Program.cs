@@ -42,13 +42,13 @@ namespace Amazon_Tours
             {
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
+                    /*ValidateIssuer = true,
                     ValidateAudience = true,
                     RequireExpirationTime = true,
                     ValidAudience = "https://enaya.sa/",
                     ValidIssuer = "https://enaya.sa/",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Palestine")),
-                    ValidateIssuerSigningKey = true
+                    ValidateIssuerSigningKey = true*/
                 };
             });
 
@@ -61,6 +61,9 @@ namespace Amazon_Tours
             builder.Services.AddScoped<IReservationService, ReservationService>();
             builder.Services.AddScoped<ITripService, TripService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IReceiptVoucherService, ReceiptVoucherService>();
+
+
 
             builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
             {

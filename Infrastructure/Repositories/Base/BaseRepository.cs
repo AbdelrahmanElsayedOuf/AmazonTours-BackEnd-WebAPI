@@ -47,7 +47,7 @@ namespace Infrastructure.Repositories.Base
         {
             if(id == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(id));
+                throw new KeyNotFoundException(nameof(id));
             }
         }
 
