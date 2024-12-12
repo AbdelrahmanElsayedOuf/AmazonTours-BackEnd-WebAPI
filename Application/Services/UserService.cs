@@ -19,9 +19,18 @@ namespace AmazonTours.Application.Services
             _userManager = userManager;
         }
 
-        public async Task<BoolWithString> Register(CreateUserDTO userDTO)
+        public async Task<AuthModel> Register(CreateUserDTO userDTO)
         {
-            var registerResponse = new BoolWithString();
+            if(await _userManager.FindByEmailAsync(userDTO.Email) is not null)
+            {
+                return new AuthModel { Email = userDTO.Email, Message = "Email already exists!" };
+            }
+
+            if (await _userManager.FindByNameAsync(userDTO.UserName) is not null)
+            {
+                return new AuthModel { UserName = userDTO.UserName, Message = "UserName  already exists!" };
+            }
+
 
             var user = new IdentityUser()
             {
@@ -30,20 +39,34 @@ namespace AmazonTours.Application.Services
             };
 
             var result = await _userManager.CreateAsync(user, userDTO.Password);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
-                registerResponse.IsSuccess = true;
-                registerResponse.StrBuildMessage = new StringBuilder("User Created Successfully!");
+                await _userManager.AddToRoleAsync(user, "User");
+                var jwt = await _userManager.CreateSecurityTokenAsync(user);
+
+                return new AuthModel()
+                {
+                    UserName = userDTO.UserName,
+                    Email = userDTO.Email,
+                    IsAuthenticated = true,
+                    Message = "Registered Successfully!",
+                    Roles = "User",
+                    Token = jwt.ToString(),
+                };
             }
             else
             {
-                registerResponse.IsSuccess = false;
+                var errors = new StringBuilder();
                 foreach (var error in result.Errors)
                 {
-                    registerResponse.StrBuildMessage.Append($"{error.Description}, ");
+                    errors.Append($"{error.Description}, ");
                 }
+
+                return new AuthModel()
+                {
+                    Message = errors.ToString(),
+                };
             }
-            return registerResponse;
         }
     }
 }

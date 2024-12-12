@@ -10,6 +10,6 @@ namespace AmazonTours.Application.Interfaces.Identity
 {
     public interface IUserService
     {
-        Task<BoolWithString> Register(CreateUserDTO userDTO);
+        Task<AuthModel> Register(CreateUserDTO userDTO);
     }
 }
