@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmazonTours.Application.Utilities
+namespace AmazonTours.Application.Utilities.HelperClasses
 {
     public class BoolWithString
     {

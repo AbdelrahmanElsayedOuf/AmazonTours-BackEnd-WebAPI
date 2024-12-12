@@ -1,5 +1,5 @@
 ﻿using AmazonTours.Application.DTOs.CreateDTOs;
-using AmazonTours.Application.Utilities;
+using AmazonTours.Application.Utilities.HelperClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;

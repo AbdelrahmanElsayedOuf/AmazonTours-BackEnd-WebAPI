@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Formats.Asn1;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -72,7 +73,7 @@ namespace Infrastructure.Repositories.Base
         public async Task<T> GetByIdAsync(Guid id)
         {
             IsNullId(id);
-            return await _dbSet.FirstAsync(e => e.Id == id);
+            return await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<T> PatchAsync(Guid id, T entity)
@@ -91,7 +92,7 @@ namespace Infrastructure.Repositories.Base
             IsNullId(id);
             if(id != entity.Id)
             {
-                throw new ArgumentNullException(nameof(id));
+                throw new AmbiguousMatchException(nameof(id));
             }
             _dbSet.Update(entity);
             return entity;
