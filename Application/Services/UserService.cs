@@ -1,4 +1,6 @@
-﻿using AmazonTours.Application.DTOs.CreateDTOs;
+﻿using AmazonTours.Application.DTOs.AuthDTOs;
+using AmazonTours.Application.DTOs.CreateDTOs;
+using AmazonTours.Application.DTOs.ReadDTOs;
 using AmazonTours.Application.Interfaces.Identity;
 using AmazonTours.Application.Utilities.HelperClasses;
 using Microsoft.AspNetCore.Identity;
@@ -19,16 +21,16 @@ namespace AmazonTours.Application.Services
             _userManager = userManager;
         }
 
-        public async Task<AuthModel> Register(CreateUserDTO userDTO)
+        public async Task<RegisterResponse> Register(CreateUserDTO userDTO)
         {
-            if(await _userManager.FindByEmailAsync(userDTO.Email) is not null)
+            if (await _userManager.FindByEmailAsync(userDTO.Email) is not null)
             {
-                return new AuthModel { Email = userDTO.Email, Message = "Email already exists!" };
+                return new RegisterResponse { IsSuccess = false, Message = "Email already exists!" };
             }
 
             if (await _userManager.FindByNameAsync(userDTO.UserName) is not null)
             {
-                return new AuthModel { UserName = userDTO.UserName, Message = "UserName  already exists!" };
+                return new RegisterResponse { IsSuccess = false, Message = "UserName  already exists!" };
             }
 
 
@@ -42,16 +44,13 @@ namespace AmazonTours.Application.Services
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "User");
-                var jwt = await _userManager.CreateSecurityTokenAsync(user);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                //TO DO: Send code in an email
 
-                return new AuthModel()
+                return new RegisterResponse()
                 {
-                    UserName = userDTO.UserName,
-                    Email = userDTO.Email,
-                    IsAuthenticated = true,
-                    Message = "Registered Successfully!",
-                    Roles = "User",
-                    Token = jwt.ToString(),
+                    IsSuccess = true,
+                    Message = $"Confirm Email code:{code}"
                 };
             }
             else
@@ -62,11 +61,75 @@ namespace AmazonTours.Application.Services
                     errors.Append($"{error.Description}, ");
                 }
 
-                return new AuthModel()
+                return new RegisterResponse()
                 {
+                    IsSuccess = false,
                     Message = errors.ToString(),
                 };
             }
+        }
+
+        public async Task<RegisterResponse> ConfirmEmail(ConfirmEmail confirmEmailDto)
+        {
+            var user = await _userManager.FindByEmailAsync(confirmEmailDto.Email);
+            if (user != null)
+            {
+                var isConfirmed = await _userManager.ConfirmEmailAsync(user, confirmEmailDto.Code);
+                if(isConfirmed.Succeeded)
+                {
+                    return new RegisterResponse()
+                    {
+                        IsSuccess = true,
+                        Message = "Email Confirmed Successfully!"
+                    };
+                }
+
+                return new RegisterResponse()
+                {
+                    IsSuccess = false,
+                    Message = "Error occurred in email confirmation!"
+                };
+            }
+
+            return new RegisterResponse()
+            {
+                IsSuccess = false,
+                Message = "User Not Found!"
+            };
+        }
+
+        public async Task<AuthModel> Login(LoginDTO loginDTO)
+        {
+            var user = await _userManager.FindByEmailAsync(loginDTO.Email);
+            if (user != null)
+            {
+                var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+                if (isEmailConfirmed)
+                {
+                    var jwt = await _userManager.GenerateUserTokenAsync(user, "Default", "CustomPurpose");
+                    return new AuthModel()
+                    {
+                        Email = loginDTO.Email,
+                        IsAuthenticated = true,
+                        Message = "Login Successfully!",
+                        Token = jwt,
+                    };
+                }
+
+                return new AuthModel()
+                {
+                    Email = loginDTO.Email,
+                    IsAuthenticated = false,
+                    Message = "Email Not Confirmed!",
+                };
+            }
+
+            return new AuthModel()
+            {
+                Email = loginDTO.Email,
+                IsAuthenticated = false,
+                Message = "User Not Found!",
+            };
         }
     }
 }
