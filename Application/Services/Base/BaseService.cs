@@ -1,5 +1,6 @@
 ﻿using AmazonTours.Application.Interfaces.Services.Base;
 using AmazonTours.Application.Interfaces.UnitOfWork;
+using AmazonTours.Application.Utilities.HelperClasses;
 using Application.Interfaces.Repositories.Base;
 using Models.Interfaces;
 using System;
@@ -36,24 +37,29 @@ namespace AmazonTours.Application.Services.Base
             return entityId;
         }
 
-        public async Task<IQueryable<T>> GetAllAsync()
+        public IQueryable<T> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            return _repository.GetAllAsync();
         }
 
-        public async Task<IQueryable<T>> GetAllAsync(int pageNumber, int pageSize)
+        public PageList<T> GetAllAsync(int pageNumber, int pageSize)
         {
-            return await _repository.GetAllAsync(pageNumber, pageSize);
+            return _repository.GetAllAsync(pageNumber, pageSize);
         }
 
-        public async Task<IQueryable<T>> GetAllAsync(params Expression<Func<T, object>>[] IncludeProperties)
+        public PageList<T> GetAllAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] IncludeProperties)
         {
-            return await _repository.GetAllAsync(IncludeProperties);
+            return _repository.GetAllAsync(pageNumber, pageSize, IncludeProperties);
         }
 
         public async Task<T> GetByIdAsync(Guid id)
         {
             return await _repository.GetByIdAsync(id);
+        }
+
+        public async Task<T> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] IncludeProperties)
+        {
+            return await _repository.GetByIdAsync(id, IncludeProperties);
         }
 
         public async Task<T> PatchAsync(Guid id, T entity)

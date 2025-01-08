@@ -29,12 +29,12 @@ namespace Amazon_Tours.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetClient(Guid clientId)
+        public async Task<IActionResult> GetClient(Guid clientId, int pageNumber = 1, int pageSize = 10)
         {
             if(clientId == Guid.Empty)
             {
                 var clients = (await _clientService
-                                .GetAllAsync(client => client.Country, client => client.City))
+                                .GetAllAsync(pageNumber, pageSize, client => client.Country, client => client.City))
                                 .ToDTOCollection<ClientDTO>(_mapper);
 
                 return OkResponse(clients);
