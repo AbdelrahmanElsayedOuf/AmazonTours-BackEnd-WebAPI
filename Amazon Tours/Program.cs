@@ -1,9 +1,13 @@
 
+using AmazonTours.Application.DTOs.ReadDTOs;
 using AmazonTours.Application.Interfaces.Identity;
 using AmazonTours.Application.Interfaces.Services;
+using AmazonTours.Application.Interfaces.Services.Base;
 using AmazonTours.Application.Interfaces.UnitOfWork;
 using AmazonTours.Application.Services;
+using AmazonTours.Application.Services.Base;
 using AmazonTours.Infrastructure.UnitOfWork;
+using AutoMapper;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -53,6 +57,8 @@ namespace Amazon_Tours
             });
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddAutoMapper(typeof(ReceiptVoucherService).Assembly);
+
             builder.Services.AddScoped<ICityService, CityService>();
             builder.Services.AddScoped<IClientService, ClientService>();
             builder.Services.AddScoped<ICountryService, CountryService>();

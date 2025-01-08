@@ -1,6 +1,6 @@
 ﻿using AmazonTours.Application.DTOs.CreateDTOs;
 using AmazonTours.Application.Interfaces.Identity;
-using AmazonTours.Application.Utilities;
+using AmazonTours.Application.Utilities.HelperClasses;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

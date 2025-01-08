@@ -19,5 +19,10 @@ namespace Amazon_Tours.Utilities.ApiResponses.Factory
         {
             return new ErrorResponse<T>() { Message = message ??  "An Error Occurred" };
         }
+
+        public static IApiResponse<T> NotFoundResponse(string message)
+        {
+            return new NotFoundResponse<T>() { Message = message ?? "Not Found" };
+        }
     }
 }

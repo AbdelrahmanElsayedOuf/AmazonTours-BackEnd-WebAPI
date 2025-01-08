@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Repositories.Base;
+﻿using AmazonTours.Application.Utilities.HelperClasses;
+using Application.Interfaces.Repositories.Base;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Models.Interfaces;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Formats.Asn1;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,28 +53,35 @@ namespace Infrastructure.Repositories.Base
             }
         }
 
-        public Task<IQueryable<T>> GetAllAsync()
+        public IQueryable<T> GetAllAsync()
         {
-            return Task.FromResult(_dbSet.Where(e => e.IsDeleted == false));
+            return _dbSet.Where(e => e.IsDeleted == false);
         }
 
-        public Task<IQueryable<T>> GetAllAsync(int pageNumber, int pageSize)
+        public PageList<T> GetAllAsync(int pageNumber, int pageSize)
         {
-            return Task.FromResult(_dbSet.Where(e => e.IsDeleted == false)
-                .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize));
+            IQueryable<T> Query = _dbSet.Where(e => e.IsDeleted == false);
+            return new PageList<T> (Query, pageNumber, pageSize);
         }
 
-        public Task<IQueryable<T>> GetAllAsync(params Expression<Func<T, object>>[] IncludeProperties)
+        public PageList<T> GetAllAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] IncludeProperties)
         {
             IQueryable<T> Query = _dbSet.Where(entity => !entity.IsDeleted);
-            return Task.FromResult(IncludeProperties.Aggregate(Query, (current, includeProperty) => current.Include(includeProperty)));
+            Query = IncludeProperties.Aggregate(Query, (current, includeProperty) => current.Include(includeProperty));
+            return new PageList<T>(Query, pageNumber, pageSize);
         }
 
         public async Task<T> GetByIdAsync(Guid id)
         {
             IsNullId(id);
-            return await _dbSet.FirstAsync(e => e.Id == id);
+            return await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public async Task<T> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] IncludeProperties)
+        {
+            IsNullId(id);
+            IQueryable<T> Query = IncludeProperties.Aggregate(_dbSet.AsQueryable(), (current, includeProperty) => current.Include(includeProperty));
+            return await Query.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<T> PatchAsync(Guid id, T entity)
@@ -91,7 +100,7 @@ namespace Infrastructure.Repositories.Base
             IsNullId(id);
             if(id != entity.Id)
             {
-                throw new ArgumentNullException(nameof(id));
+                throw new AmbiguousMatchException(nameof(id));
             }
             _dbSet.Update(entity);
             return entity;
