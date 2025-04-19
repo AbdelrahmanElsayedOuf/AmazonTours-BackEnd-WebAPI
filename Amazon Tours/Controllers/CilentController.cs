@@ -35,7 +35,7 @@ namespace Amazon_Tours.Controllers
             {
                 var clients = (await _clientService
                                 .GetAllAsync(pageNumber, pageSize, client => client.Country, client => client.City))
-                                .ToDTOCollection<ClientDTO>(_mapper);
+                                .ToDTOCollection<Client, ClientDTO>(_mapper);
 
                 return OkResponse(clients);
             }

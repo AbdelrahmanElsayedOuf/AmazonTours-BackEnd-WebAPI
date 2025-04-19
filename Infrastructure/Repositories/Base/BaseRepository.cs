@@ -53,22 +53,22 @@ namespace Infrastructure.Repositories.Base
             }
         }
 
-        public IQueryable<T> GetAllAsync()
+        public async Task<List<T>> GetAllAsync()
         {
-            return _dbSet.Where(e => e.IsDeleted == false);
+            return await _dbSet.Where(e => e.IsDeleted == false).ToListAsync();
         }
 
-        public PageList<T> GetAllAsync(int pageNumber, int pageSize)
+        public async Task<PageList<T>> GetAllAsync(int pageNumber, int pageSize)
         {
             IQueryable<T> Query = _dbSet.Where(e => e.IsDeleted == false);
-            return new PageList<T> (Query, pageNumber, pageSize);
+            return await PageList<T>.CreateAsync(Query, pageNumber, pageSize);
         }
 
-        public PageList<T> GetAllAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] IncludeProperties)
+        public async Task<PageList<T>> GetAllAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] IncludeProperties)
         {
             IQueryable<T> Query = _dbSet.Where(entity => !entity.IsDeleted);
             Query = IncludeProperties.Aggregate(Query, (current, includeProperty) => current.Include(includeProperty));
-            return new PageList<T>(Query, pageNumber, pageSize);
+            return await PageList<T>.CreateAsync(Query, pageNumber, pageSize);
         }
 
         public async Task<T> GetByIdAsync(Guid id)

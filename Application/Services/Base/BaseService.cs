@@ -37,19 +37,19 @@ namespace AmazonTours.Application.Services.Base
             return entityId;
         }
 
-        public IQueryable<T> GetAllAsync()
+        public async Task<List<T>> GetAllAsync()
         {
-            return _repository.GetAllAsync();
+            return await _repository.GetAllAsync();
         }
 
-        public PageList<T> GetAllAsync(int pageNumber, int pageSize)
+        public async Task<PageList<T>> GetAllAsync(int pageNumber, int pageSize)
         {
-            return _repository.GetAllAsync(pageNumber, pageSize);
+            return await _repository.GetAllAsync(pageNumber, pageSize);
         }
 
-        public PageList<T> GetAllAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] IncludeProperties)
+        public async Task<PageList<T>> GetAllAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] IncludeProperties)
         {
-            return _repository.GetAllAsync(pageNumber, pageSize, IncludeProperties);
+            return await _repository.GetAllAsync(pageNumber, pageSize, IncludeProperties);
         }
 
         public async Task<T> GetByIdAsync(Guid id)

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AmazonTours.Application.Utilities.HelperClasses;
+using AutoMapper;
 using Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,13 @@ namespace AmazonTours.Application.Utilities.Extensions
             return mapper.Map<T>(entity);
         }
 
-        public static IEnumerable<T> ToDTOCollection<T>(this IQueryable<IEntity> entities, IMapper mapper)
+        public static PageList<TDto> ToDTOCollection<T, TDto>(this PageList<T> page, IMapper mapper)
+    where T : IEntity
         {
-            return entities.Select(entity => mapper.Map<T>(entity));
+            var dtoItems = page.Items.Select(item => mapper.Map<TDto>(item)).ToList();
+            PageList<TDto> pageList = new PageList<TDto>(dtoItems, page.TotalItemsCount, page.PageNumber, page.PageSize);
+            return pageList;
         }
+
     }
 }
