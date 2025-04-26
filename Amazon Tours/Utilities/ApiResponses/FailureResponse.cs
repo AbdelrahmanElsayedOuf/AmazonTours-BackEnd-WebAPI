@@ -3,10 +3,10 @@ using System.Net;
 
 namespace Amazon_Tours.Utilities.ApiResponses
 {
-    public class FailureResponse<T> : IApiResponse<T>
+    public class FailureResponse<T> : IApiResponse<T>, IMultipleMessages
     {
         public bool Success { get; set; } = false;
         public T Data { get; set; } = default(T);
-        public string Message { get; set; }
+        public IEnumerable<string> Messages { get; set; }
     }
 }

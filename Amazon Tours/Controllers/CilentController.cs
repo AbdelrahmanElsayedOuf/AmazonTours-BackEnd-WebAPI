@@ -45,7 +45,7 @@ namespace Amazon_Tours.Controllers
             {
                 return OkResponse(idExistence.Entity.ToDTO<Client>(_mapper));
             }
-            return NotFoundResponse<Client>();
+            return NotFoundResponse();
         }
 
 
@@ -72,7 +72,7 @@ namespace Amazon_Tours.Controllers
                 return OkResponse(clientId);
             }
 
-            return NotFoundResponse<Client>();
+            return NotFoundResponse();
         }
 
         [HttpPut]

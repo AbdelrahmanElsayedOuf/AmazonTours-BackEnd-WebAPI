@@ -1,4 +1,5 @@
 ﻿using AmazonTours.Application.DTOs.CreateDTOs;
+using AmazonTours.Application.DTOs.ReadDTOs;
 using AmazonTours.Application.Interfaces.Identity;
 using AmazonTours.Application.Utilities.HelperClasses;
 using FluentEmail.Core;
@@ -22,12 +23,9 @@ namespace AmazonTours.Application.Services
             _fluentEmail = fluentEmail;
         }
 
-        public async Task<BoolWithString> Register(CreateUserDTO userDTO)
+        public async Task<RegisterResponse> Register(CreateUserDTO userDTO)
         {
-            var registerResponse = new BoolWithString
-            {
-                StrBuildMessage = new StringBuilder()
-            };
+            var registerResponse = new RegisterResponse();
 
             try
             {
@@ -35,8 +33,8 @@ namespace AmazonTours.Application.Services
                 var existingUser = await _userManager.FindByEmailAsync(userDTO.Email);
                 if (existingUser != null)
                 {
-                    registerResponse.IsSuccess = false;
-                    registerResponse.StrBuildMessage.Append("Email is already registered.");
+                    registerResponse.IsEmailConfirmed = existingUser.EmailConfirmed;
+                    registerResponse.Messages = new List<string>() { "Email is already registered before." } ;
                     return registerResponse;
                 }
 
@@ -58,7 +56,6 @@ namespace AmazonTours.Application.Services
                     var confirmationLink = $"https://your-app-url/confirm-email?userId={user.Id}&token={Uri.EscapeDataString(token)}";
 
                     // TODO: Send the confirmation link via email (integrate an email service)
-                    // Example: await _emailService.SendEmailAsync(user.Email, "Confirm your email", confirmationLink);
                     await _fluentEmail
                         .To(user.Email)
                         .Subject("Confirm your email")
@@ -66,55 +63,49 @@ namespace AmazonTours.Application.Services
                         .SendAsync();
 
 
-                    registerResponse.IsSuccess = true;
-                    registerResponse.StrBuildMessage.Append("User created successfully! Please check your email to confirm your account.");
+                    registerResponse.UserId = user.Id;
+                    registerResponse.Messages = new List<string>() { "User created successfully! Please check your email to confirm your account." };
                 }
                 else
                 {
                     // Handle errors during user creation
-                    registerResponse.IsSuccess = false;
-                    registerResponse.StrBuildMessage.Append(string.Join(", ", result.Errors.Select(e => e.Description)));
+                    registerResponse.Messages = result.Errors.Select(e => e.Description);
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception (use a logging framework like Serilog, NLog, etc.)
                 // Example: _logger.LogError(ex, "An error occurred during user registration.");
-
-                registerResponse.IsSuccess = false;
-                registerResponse.StrBuildMessage.Append("An unexpected error occurred. Please try again later.");
+                registerResponse.Messages = new List<string>() { "An unexpected error occurred. Please try again later." };
             }
 
             return registerResponse;
         }
 
-        public async Task<BoolWithString> ConfirmEmail(string userId, string token)
+        public async Task<BoolWithListOfMessges> ConfirmEmail(string userId, string token)
         {
-            var confirmResponse = new BoolWithString
-            {
-                StrBuildMessage = new StringBuilder()
-            };
+            var confirmResponse = new BoolWithListOfMessges();
             try
             {
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user == null)
                 {
                     confirmResponse.IsSuccess = false;
-                    confirmResponse.StrBuildMessage.Append("User not found.");
+                    confirmResponse.Messages.Append("User not found.");
                     return confirmResponse;
                 }
                 var result = await _userManager.ConfirmEmailAsync(user, token);
                 if (result.Succeeded)
                 {
                     confirmResponse.IsSuccess = true;
-                    confirmResponse.StrBuildMessage.Append("Email confirmed successfully!");
+                    confirmResponse.Messages.Append("Email confirmed successfully!");
                 }
                 else
                 {
                     confirmResponse.IsSuccess = false;
                     foreach (var error in result.Errors)
                     {
-                        confirmResponse.StrBuildMessage.Append(string.Join(", ", result.Errors.Select(e => e.Description)));
+                        confirmResponse.Messages.Append(string.Join(", ", result.Errors.Select(e => e.Description)));
                     }
                 }
             }
@@ -123,7 +114,7 @@ namespace AmazonTours.Application.Services
                 // Log the exception (use a logging framework like Serilog, NLog, etc.)
                 // Example: _logger.LogError(ex, "An error occurred during email confirmation.");
                 confirmResponse.IsSuccess = false;
-                confirmResponse.StrBuildMessage.Append("An unexpected error occurred. Please try again later.");
+                confirmResponse.Messages.Append("An unexpected error occurred. Please try again later.");
             }
             return confirmResponse;
         }

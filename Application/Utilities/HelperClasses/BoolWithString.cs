@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace AmazonTours.Application.Utilities.HelperClasses
 {
-    public class BoolWithString
+    public class BoolWithSingleMessge
     {
         public bool IsSuccess { get; set; }
-        public StringBuilder StrBuildMessage { get; set; } = new StringBuilder();
+        public string Message { get; set; }
+    }
+
+    public class BoolWithListOfMessges
+    {
+        public bool IsSuccess { get; set; }
+        public IEnumerable<string> Messages { get; set; }
     }
 }

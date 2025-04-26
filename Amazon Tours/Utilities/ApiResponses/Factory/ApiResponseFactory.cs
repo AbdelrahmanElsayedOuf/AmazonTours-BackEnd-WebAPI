@@ -5,19 +5,19 @@ namespace Amazon_Tours.Utilities.ApiResponses.Factory
 {
     public static class ApiResponseFactory<T>
     {
-        public static IApiResponse<T> SuccessResponse(T data, string message)
+        public static IApiResponse<T> SuccessResponse(T data, string message = null)
         {
             return new SuccessResponse<T>() { Data = data, Message = message ?? "Successfull Request!" };
         }
 
-        public static IApiResponse<T> FailureResponse(string message)
+        public static IApiResponse<T> FailureResponse(IEnumerable<string> messages)
         {
-            return new FailureResponse<T>() { Message = message ??  "Bad Request From Client Side" };
+            return new FailureResponse<T>() { Messages = messages };
         }
 
-        public static IApiResponse<T> ErrorResponse(string message)
+        public static IApiResponse<T> ErrorResponse(IEnumerable<string> messages)
         {
-            return new ErrorResponse<T>() { Message = message ??  "An Error Occurred" };
+            return new ErrorResponse<T>() { Messages = messages };
         }
 
         public static IApiResponse<T> NotFoundResponse(string message)

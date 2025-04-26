@@ -16,6 +16,10 @@ namespace Amazon_Tours.Controllers
     {
         private readonly IBaseService<T> _baseService;
 
+        public AppBaseController()
+        {
+            
+        }
         public AppBaseController(IBaseService<T> baseService)
         {
             _baseService = baseService;
@@ -26,19 +30,19 @@ namespace Amazon_Tours.Controllers
             return Ok(ApiResponseFactory<T>.SuccessResponse(data, message));
         }
 
-        public IActionResult BadRequestResponse<T>(string message = null)
+        public IActionResult BadRequestResponse(IEnumerable<string> messages)
         {
-            return BadRequest(ApiResponseFactory<T>.FailureResponse(message));
+            return BadRequest(ApiResponseFactory<T>.FailureResponse(messages));
         }
 
-        public IActionResult NotFoundResponse<T>(string message = null)
+        public IActionResult NotFoundResponse(string message = null)
         {
             return NotFound(ApiResponseFactory<T>.NotFoundResponse(message));
         }
 
-        public IActionResult ErrorResponse<T>(T data, string message = null)
+        public IActionResult ErrorResponse(IEnumerable<string> messages)
         {
-            return StatusCode(500, ApiResponseFactory<T>.ErrorResponse(message));
+            return StatusCode(500, ApiResponseFactory<T>.ErrorResponse(messages));
         }
 
 
@@ -54,9 +58,11 @@ namespace Amazon_Tours.Controllers
 
         protected IActionResult InValidModelState()
         {
-            var stringifiedError = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage));
-            return BadRequestResponse<T>(stringifiedError);
+            var errorList = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage);
+
+            return BadRequestResponse(errorList);
         }
     }
 }

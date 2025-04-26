@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 
 namespace Amazon_Tours
@@ -36,8 +38,7 @@ namespace Amazon_Tours
                 .AddDefaultTokenProviders();
 
             // Add Authentication
-            //
-            //It defines the mechanism through which the application verifies the identity of users or clients.
+            // It defines the mechanism through which the application verifies the identity of users or clients.
             builder.Services.AddAuthentication(auth =>
             {
                 auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -46,15 +47,17 @@ namespace Amazon_Tours
             {
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                 {
-                    /*ValidateIssuer = true,
-                    ValidateAudience = true,
-                    RequireExpirationTime = true,
-                    ValidAudience = "https://enaya.sa/",
-                    ValidIssuer = "https://enaya.sa/",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Palestine")),
-                    ValidateIssuerSigningKey = true*/
                 };
             });
+
+            // Add SMTP
+            builder.Services.AddFluentEmail(builder.Configuration["Email:Sender"])
+                .AddSmtpSender(new SmtpClient(builder.Configuration["Email:Host"])
+                {
+                    Port = int.Parse(builder.Configuration["Email:Port"]),
+                    Credentials = new NetworkCredential(builder.Configuration["Email:Username"], builder.Configuration["Email:Password"]),
+                    EnableSsl = true,
+                });
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(typeof(ReceiptVoucherService).Assembly);
@@ -68,6 +71,8 @@ namespace Amazon_Tours
             builder.Services.AddScoped<ITripService, TripService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IReceiptVoucherService, ReceiptVoucherService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+
 
 
 

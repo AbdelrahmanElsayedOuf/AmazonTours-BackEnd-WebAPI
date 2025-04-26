@@ -1,5 +1,8 @@
 ﻿using AmazonTours.Application.DTOs.CreateDTOs;
+using AmazonTours.Application.DTOs.ReadDTOs;
+using AmazonTours.Application.Interfaces.Services.Base;
 using AmazonTours.Application.Utilities.HelperClasses;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +13,6 @@ namespace AmazonTours.Application.Interfaces.Identity
 {
     public interface IUserService
     {
-        Task<BoolWithString> Register(CreateUserDTO userDTO);
+        Task<RegisterResponse> Register(CreateUserDTO userDTO);
     }
 }
