@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace Models
         public string LName { get; set; }
 
         [StringLength(100)]
-        public string IdentityImage { get; set; }
+        public string? IdentityImage { get; set; }
 
         [ForeignKey(nameof(City))]
         public Guid CityId { get; set; }

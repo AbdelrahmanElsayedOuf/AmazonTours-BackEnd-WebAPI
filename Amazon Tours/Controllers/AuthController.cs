@@ -4,7 +4,9 @@ using AmazonTours.Application.DTOs.CreateDTOs;
 using AmazonTours.Application.DTOs.ReadDTOs;
 using AmazonTours.Application.Interfaces.Identity;
 using AmazonTours.Application.Utilities;
+using AmazonTours.Application.Utilities.HelperClasses;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;
@@ -15,29 +17,34 @@ namespace Amazon_Tours.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        /*private readonly IUserService _userService;
+        private readonly IUserService _userService;
 
         public AuthController(IUserService userService)
         {
             _userService = userService;
         }
 
-        [HttpPost]
-        [Route("Register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register(CreateUserDTO userDTO)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var validationErrors = String.Join("; ", ModelState.Values
-                    .SelectMany(val => val.Errors).Select(err => err.ErrorMessage));
-                return BadRequest(ApiResponseFactory<string>.FailureResponse(null, System.Net.HttpStatusCode.BadRequest, validationErrors));
+                var errorList = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+
+                return BadRequest(ApiResponseFactory<IEnumerable<string>>.FailureResponse(errorList));
             }
-            var result = await _userService.Register(userDTO);
-            if(result.IsSuccess)
+
+            var registerResponse = await _userService.Register(userDTO);
+            if (!string.IsNullOrEmpty(registerResponse.UserId))
             {
-                return Ok(ApiResponseFactory<string>.SuccessResponse(null, System.Net.HttpStatusCode.Created, result.StrBuildMessage.ToString()));
+                return Ok(ApiResponseFactory<RegisterResponse>.SuccessResponse(registerResponse));
             }
-            return BadRequest(ApiResponseFactory<string>.FailureResponse(null, System.Net.HttpStatusCode.BadRequest, result.StrBuildMessage.ToString()));
-        }*/
+            else
+            {
+                return BadRequest(ApiResponseFactory<RegisterResponse>.FailureResponse(registerResponse.Messages));
+            }
+        }
     }
 }

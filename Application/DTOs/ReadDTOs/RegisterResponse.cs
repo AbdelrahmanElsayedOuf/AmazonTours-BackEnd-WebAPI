@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmazonTours.Application.Utilities.HelperClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace AmazonTours.Application.DTOs.ReadDTOs
 {
     public class RegisterResponse
     {
-        //public isCreated MyProperty { get; set; }
+        public string UserId { get; set; }
+        public IEnumerable<string> Roles { get; set; }
+        public bool IsEmailConfirmed { get; set; }
+        public IEnumerable<string> Messages { get; set; }
     }
 }
